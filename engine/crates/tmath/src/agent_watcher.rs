@@ -87,8 +87,8 @@ pub(crate) fn run_agent(args: &[String]) -> Result<i32, String> {
         Some(true) => Some("1".to_string()),
         _ => None,
     };
-    let font_size_pt = crate::config::resolve_font_size_pt_env_or_config(&file_config)
-        .map(format_font_size_pt);
+    let font_size_pt =
+        crate::config::resolve_font_size_pt_env_or_config(&file_config).map(format_font_size_pt);
     let viewer_cmd = viewer_command(
         &exe,
         &socket_path,
@@ -319,16 +319,15 @@ fn format_font_size_pt(value: f64) -> String {
     }
 }
 
-fn parse_agent_args(args: &[String], file: &crate::config::AgentConfig) -> Result<WatcherArgs, String> {
+fn parse_agent_args(
+    args: &[String],
+    file: &crate::config::AgentConfig,
+) -> Result<WatcherArgs, String> {
     let mut percent = file
         .viewer_percent
         .unwrap_or(crate::config::DEFAULT_AGENT_VIEWER_PERCENT);
-    let mut wait_ms = file
-        .wait_ms
-        .unwrap_or(crate::config::DEFAULT_AGENT_WAIT_MS);
-    let mut poll_ms = file
-        .poll_ms
-        .unwrap_or(crate::config::DEFAULT_AGENT_POLL_MS);
+    let mut wait_ms = file.wait_ms.unwrap_or(crate::config::DEFAULT_AGENT_WAIT_MS);
+    let mut poll_ms = file.poll_ms.unwrap_or(crate::config::DEFAULT_AGENT_POLL_MS);
     let mut history = file
         .history_lines
         .unwrap_or(crate::config::DEFAULT_AGENT_HISTORY_LINES);
@@ -875,17 +874,17 @@ mod tests {
     fn parses_agent_options() {
         let parsed = parse_agent_args(
             &args(&[
-            "--source-pane",
-            "%7",
-            "--percent",
-            "50",
-            "--wait-ms",
-            "300",
-            "--poll-ms",
-            "100",
-            "--history",
-            "200",
-        ]),
+                "--source-pane",
+                "%7",
+                "--percent",
+                "50",
+                "--wait-ms",
+                "300",
+                "--poll-ms",
+                "100",
+                "--history",
+                "200",
+            ]),
             &file_defaults(),
         )
         .unwrap();
