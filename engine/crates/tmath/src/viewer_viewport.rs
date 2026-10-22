@@ -265,10 +265,7 @@ mod tests {
     fn scroll_by_disengages_follow_and_clamps_to_bounds() {
         let mut viewport = Viewport::new(5);
         viewport.set_block_heights(vec![10, 10, 10]); // total 30, max_offset 25
-        assert!(
-            viewport.following(),
-            "append pinned to top while following"
-        );
+        assert!(viewport.following(), "append pinned to top while following");
         assert_eq!(viewport.offset(), 0);
 
         assert!(viewport.scroll_by(10.0));

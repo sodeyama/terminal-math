@@ -454,8 +454,7 @@ mod tests {
     }
 
     #[test]
-    fn resolve_dpr_override_skips_when_winsize_already_reports_physical_pixels(
-    ) {
+    fn resolve_dpr_override_skips_when_winsize_already_reports_physical_pixels() {
         // A 14px-wide cell auto-detects to dpr 2; forcing TMATH_DPR=2 again
         // would double-scale the cell and shrink placements.
         assert_eq!(resolve_dpr_override(Some("2"), true, (14, 28)), None);

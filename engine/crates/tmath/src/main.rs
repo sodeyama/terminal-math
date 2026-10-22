@@ -771,14 +771,9 @@ mod tests {
         assert_eq!(parsed.input, "doc.md");
         assert_eq!(parsed.content_width, None);
 
-        let parsed = parse_render_args(&args(&[
-            "--content-width",
-            "800",
-            "--font-size",
-            "18",
-            "-",
-        ]))
-        .unwrap();
+        let parsed =
+            parse_render_args(&args(&["--content-width", "800", "--font-size", "18", "-"]))
+                .unwrap();
         assert_eq!(parsed.input, "-");
         assert_eq!(parsed.content_width, Some(800));
         assert_eq!(parsed.font_size, Some(18));

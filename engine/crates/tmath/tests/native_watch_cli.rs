@@ -261,8 +261,5 @@ fn unknown_engine_option_is_rejected_for_watch() {
         .unwrap();
     assert!(!output.status.success());
     let stderr = String::from_utf8_lossy(&output.stderr);
-    assert!(
-        stderr.contains("unknown option"),
-        "{stderr}"
-    );
+    assert!(stderr.contains("unknown option"), "{stderr}");
 }

@@ -70,8 +70,8 @@ pub fn find_answer(baseline: &str, completion: &str) -> Option<Answer> {
             return Some(answer);
         }
         if let Some(answer) = claude_in_progress_answer(&cl) {
-            let baseline_answer = prompt_delimited_answer(&bl)
-                .or_else(|| claude_in_progress_answer(&bl));
+            let baseline_answer =
+                prompt_delimited_answer(&bl).or_else(|| claude_in_progress_answer(&bl));
             if baseline_answer.as_ref() == Some(&answer) {
                 return None;
             }
@@ -185,10 +185,7 @@ fn claude_in_progress_answer(completion: &[&str]) -> Option<Answer> {
         .rposition(|line| is_delimited_prompt_line(line) && !is_idle_prompt_line(line))?
         + 1;
     let body = filter_answer_body_lines(completion.get(start..)?.to_vec());
-    if !body
-        .iter()
-        .any(|line| line.trim_start().starts_with('⏺'))
-    {
+    if !body.iter().any(|line| line.trim_start().starts_with('⏺')) {
         return None;
     }
     let text = clean_tail(&body.join("\n"))?;
@@ -225,7 +222,10 @@ fn is_claude_compose_input_line(line: &str) -> bool {
 /// Mixed compose-plus-chrome tails (the input line repainting above a status
 /// bar) must be rejected as a whole, not line class by line class.
 fn tail_is_compose_or_noise(tail: &str) -> bool {
-    let lines: Vec<&str> = tail.lines().filter(|line| !line.trim().is_empty()).collect();
+    let lines: Vec<&str> = tail
+        .lines()
+        .filter(|line| !line.trim().is_empty())
+        .collect();
     lines.is_empty()
         || lines.iter().all(|line| {
             is_user_input_line(line)
@@ -876,7 +876,8 @@ Sonnet 5 with high effort · Claude Max\n\
 
     #[test]
     fn typing_a_new_prompt_does_not_reemit_a_prior_streaming_answer() {
-        let baseline = "❯ Old question\n\n⏺ Old answer text\n✻ Done\n────────────────────────\n❯\n> 数";
+        let baseline =
+            "❯ Old question\n\n⏺ Old answer text\n✻ Done\n────────────────────────\n❯\n> 数";
         let completion =
             "❯ Old question\n\n⏺ Old answer text\n✻ Done\n────────────────────────\n❯\n> 数学";
         assert_eq!(answer(baseline, completion), None);
@@ -908,9 +909,8 @@ Sonnet 5 with high effort · Claude Max\n\
     #[test]
     fn streaming_command_output_appends_japanese_lines_incrementally() {
         let baseline = "❯ \n❯ python3 demo.py bayes-ja\n# ベイズ統計 — 要点まとめ\n";
-        let completion = format!(
-            "{baseline}\n**事後分布**は **事前分布** と **尤度** から更新される:\n"
-        );
+        let completion =
+            format!("{baseline}\n**事後分布**は **事前分布** と **尤度** から更新される:\n");
         assert_eq!(
             answer(baseline, &completion).as_deref(),
             Some("**事後分布**は **事前分布** と **尤度** から更新される:")

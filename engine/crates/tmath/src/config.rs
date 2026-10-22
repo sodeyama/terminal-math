@@ -294,8 +294,8 @@ pub(crate) fn save(path: &Path, config: &Config) -> Result<(), String> {
     fs::create_dir_all(parent).map_err(|error| format!("{}: {error}", parent.display()))?;
 
     let document = ConfigDocument::from_config(config);
-    let text = toml::to_string_pretty(&document)
-        .map_err(|error| format!("config serialize: {error}"))?;
+    let text =
+        toml::to_string_pretty(&document).map_err(|error| format!("config serialize: {error}"))?;
 
     let mut open_options = fs::OpenOptions::new();
     open_options.write(true).create(true).truncate(true);
@@ -780,9 +780,7 @@ mod tests {
     #[test]
     fn allowlist_expands_tilde_paths_from_config() {
         let home = env::var("HOME").expect("HOME");
-        let path = temp_config_path(Some(
-            "[agent]\nallowlist = [\"~/docs/obsidian\"]\n",
-        ));
+        let path = temp_config_path(Some("[agent]\nallowlist = [\"~/docs/obsidian\"]\n"));
         let config = load(&path);
         assert_eq!(
             config.agent.allowlist,

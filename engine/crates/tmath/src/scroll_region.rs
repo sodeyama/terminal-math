@@ -205,7 +205,9 @@ pub(crate) fn region_append_top_operations(
     }
 
     let home_row = region_top.saturating_add(rows_before);
-    let mut operations = vec![TerminalOp::Local(format!("\x1b[{home_row};1H").into_bytes())];
+    let mut operations = vec![TerminalOp::Local(
+        format!("\x1b[{home_row};1H").into_bytes(),
+    )];
     operations.extend(emit_placed_block_row_range_cursor(
         RowRangePlacement {
             image_id,
