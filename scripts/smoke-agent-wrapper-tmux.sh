@@ -58,7 +58,7 @@ chmod +x "$SHIM_DIR/tmux"
 # instead of only on whether its process is still alive (it fails closed
 # immediately in this headless, non-Kitty tmux client — see the note above).
 WRAPPER="$TMP_HOME/tmath-agent.sh"
-sed "s#tmath agent --source-pane \"\$pane\" >/dev/null 2>&1#tmath agent --source-pane \"\$pane\" >>'$WATCHER_LOG' 2>\&1#" \
+sed "/tmath agent --source-pane /s#>/dev/null 2>&1#>>'$WATCHER_LOG' 2>\&1#" \
   "$ROOT/scripts/shell/tmath-agent.sh" > "$WRAPPER"
 
 cat > "$BIN_DIR/tmath" <<EOF
@@ -152,7 +152,7 @@ NESTED_SESSION="tmath-probe-$$"
 NESTED_LOG="$TMP_HOME/nested-watcher.log"
 NESTED_PANE_FILE="$TMP_HOME/nested-pane"
 NESTED_WRAPPER="$TMP_HOME/tmath-agent-nested.sh"
-sed "s#tmath agent --source-pane \"\$pane\" >/dev/null 2>&1#tmath agent --source-pane \"\$pane\" >>'$NESTED_LOG' 2>\&1#" \
+sed "/tmath agent --source-pane /s#>/dev/null 2>&1#>>'$NESTED_LOG' 2>\&1#" \
   "$ROOT/scripts/shell/tmath-agent.sh" > "$NESTED_WRAPPER"
 (
   export HOME="$TMP_HOME" TMATH_TMUX_TRANSPORT=passthrough
